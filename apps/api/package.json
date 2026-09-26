@@ -1,0 +1,19 @@
+{
+  "name": "@tft/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Application/query API (framework not chosen yet — see T0506).",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@tft/data-access": "workspace:*",
+    "@tft/game-schema": "workspace:*",
+    "@tft/mechanics": "workspace:*",
+    "@tft/rules": "workspace:*",
+    "@tft/shared": "workspace:*"
+  }
+}

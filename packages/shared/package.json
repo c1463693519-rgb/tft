@@ -1,0 +1,22 @@
+{
+  "name": "@tft/shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Generic shared types and utilities.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "@tft/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

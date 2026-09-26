@@ -1,0 +1,22 @@
+{
+  "name": "@tft/game-schema",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Champion/Item/Trait/Effect/Patch types and schemas. No business IO.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "@tft/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

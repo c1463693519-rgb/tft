@@ -1,0 +1,30 @@
+{
+  "package": "TFT Mechanics & Data Platform Documentation",
+  "version": "0.1",
+  "baseline_date": "2026-09-27",
+  "reference_patch": "18.3 B Patch",
+  "files": [
+    "README.md",
+    "PRD.md",
+    "CALCULATION_RULES.md",
+    "DATA_DESIGN.md",
+    "ARCHITECTURE.md",
+    "UI_UX_SPEC.md",
+    "WIREFRAMES.md",
+    "API_SPEC.md",
+    "DATABASE_SCHEMA.md",
+    "DATA_PIPELINE.md",
+    "TESTING_STRATEGY.md",
+    "PATCH_UPDATE_RUNBOOK.md",
+    "TASKS.md",
+    "ROADMAP.md",
+    "DECISIONS.md",
+    "AGENTS.md",
+    "SECURITY_COMPLIANCE.md",
+    "PRODUCT_ANALYTICS.md",
+    "GLOSSARY.md",
+    "SOURCES.md",
+    "PROJECT_STRUCTURE.md",
+    "DEPLOYMENT.md"
+  ]
+}
