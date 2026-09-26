@@ -61,3 +61,31 @@ Simulation API 限制：
 ## 8. Raw Data
 
 对象存储 bucket 默认 private；公开 assets 使用独立 CDN path。
+
+## 9. VPS 数据库与缓存访问
+
+PostgreSQL / Redis 部署在 VPS 上，开发机和 CI 通过公网 `IP:端口` 直连（ADR-011）。端口对公网开放，因此以下要求是强制的。
+
+### PostgreSQL
+
+- 只接受 TLS 连接：`pg_hba.conf` 远程规则使用 `hostssl`；客户端 `sslmode=require`（证书可校验时用 `verify-full`）。
+- 密码认证使用 `scram-sha-256`，强随机密码。
+- `postgres` 超级用户禁止远程登录。
+- prod 账号在 `pg_hba.conf` 中只允许本机/内网来源；公网只放行 dev / test 账号。
+- dev / test / prod 分库、分账号，最小权限：应用账号不是 superuser；schema migration 使用单独账号。
+
+### Redis
+
+- 必须启用 ACL 用户或强密码，禁止无认证实例；保持 `protected-mode`。
+- 启用 TLS（客户端使用 `rediss://`）。
+- 通过 ACL 禁止应用账号使用危险命令（`CONFIG`、`FLUSHALL`、`FLUSHDB`、`DEBUG`、`MODULE`、`SCRIPT` 等）。
+- 使用仍在维护的版本，及时更新安全补丁。
+
+### 通用
+
+- 可使用非默认端口以减少自动扫描噪音（这不是安全措施本身）。
+- 监控认证失败日志，发现暴力破解及时封禁来源。
+- 凭据只放在不提交的 `.env`、GitHub Secrets 和生产环境 secret 中，不写进文档或代码。CI 只持有 test 账号。
+- VPS 的 SSH（运维用）使用密钥登录，禁用密码登录。
+- Coding Agent 不得对 prod 数据库执行 migration 或写操作。
+- 定期备份，见 `DEPLOYMENT.md` §6。

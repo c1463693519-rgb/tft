@@ -1,17 +1,30 @@
 # DEPLOYMENT — 本地、预览、生产
 
-## 1. 本地 MVP
+## 1. 本地开发
 
-推荐 Docker Compose 只启动基础依赖：
+开发机（Windows）只运行 Node 进程，**不安装数据库，也不安装 Docker**（ADR-011）。
 
 ```text
-PostgreSQL
-Redis (optional initially)
-ClickHouse (到 Meta phase 再开启)
-MinIO (可选；开发早期可用本地目录)
+开发机：Web / API / Worker（本机 Node 进程）   GitHub Actions（集成测试）
+        │                                          │
+        └──────── VPS IP:端口 直连（TLS）──────────┘
+                            ▼
+                 VPS：PostgreSQL、Redis
 ```
 
-Web/API/Worker 使用本地进程，方便调试。
+| 依赖 | 位置 | 说明 |
+|---|---|---|
+| PostgreSQL | VPS | dev / test / prod 分库、分账号 |
+| Redis | VPS | 初期可选；dev / test / prod 隔离 |
+| ClickHouse | 待定 | 到 Meta phase 再决定 |
+| Object Storage | 早期用开发机本地目录 | 之后 S3/R2 或 VPS，待定 |
+
+`.env` 中的 `DATABASE_URL` / `REDIS_URL` 直接写 `VPS IP:端口`，并启用 TLS（PostgreSQL `sslmode=require`，Redis 使用 `rediss://`）。访问安全要求见 `SECURITY_COMPLIANCE.md` §9。
+
+测试策略：
+
+- 单元测试、Golden 测试不连接数据库。
+- 集成测试使用单独的测试库（`TEST_DATABASE_URL`）；CI 中通过 GitHub Secrets 提供 test 账号的连接串，直连 VPS。
 
 ## 2. Preview
 
@@ -52,6 +65,8 @@ RIOT_API_KEY
 ACTIVE_PATCH_REVISION
 ```
 
+`DATABASE_URL` / `REDIS_URL` 指向 VPS 服务（`VPS IP:端口`，启用 TLS）。每个环境（dev/test/prod）使用各自的连接串和账号。
+
 不要通过环境变量写 Mechanics 数值。
 
 ## 5. Release
@@ -74,6 +89,8 @@ rules revision
 - Postgres rules/verification metadata
 - raw source object storage
 - manual test evidence
+
+PostgreSQL 在 VPS 上定期备份，且备份副本不能只保存在同一台 VPS 上。
 
 ClickHouse Match raw 可以从 object storage 重建时，其备份优先级可低于规则库，但视成本决定。
 

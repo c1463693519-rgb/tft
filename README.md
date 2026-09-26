@@ -35,7 +35,7 @@ packages/shared       generic utils
 packages/ui           design-system components
 data/               fixtures / golden / schemas (explicit patch revisions only)
 scripts/            import-static / diff-patch / regression
-infra/              docker / migrations
+infra/              vps (PostgreSQL/Redis notes) / migrations
 ```
 
 Workspace packages expose an `@tft/source` export condition pointing at `src/`, so typecheck and

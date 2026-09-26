@@ -33,7 +33,7 @@ tft-platform/
 ├─ docs/
 │  └─ ...本 ZIP 文档
 ├─ infra/
-│  ├─ docker/
+│  ├─ vps/                    # VPS 上 PostgreSQL/Redis 的配置说明（ADR-011）
 │  └─ migrations/
 ├─ .github/workflows/
 ├─ pnpm-workspace.yaml
